@@ -1,3 +1,7 @@
+// Author: HeliaSadat Hashemipour-9831106
+// This is the main script file for the midterm project.
+// This file contains the main logic of the project.
+
 const APIURL = 'https://api.github.com/users/'
 
 const user_image = document.querySelector(".user-image");
@@ -25,10 +29,10 @@ async function sendRequest (e) { // send request to github api
   const data = await JSON.parse(window.localStorage.getItem(username)); // get data from local storage
 
   if (data) { // if data is in local storage
-    user_name.textContent = data.name ? data.name : '<span>--<span>';
-    user_blog.textContent = data.blog ? data.blog :'<span>--<span>';
+    user_name.innerHTML = data.name ? data.name : '<span>--<span>';
+    user_blog.innerHTML = data.blog ? data.blog :'<span>--<span>';
     user_bio.innerHTML = data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>';
-    user_location.textContent = data.location ? data.location : '<span>--<span>';
+    user_location.innerHTML = data.location ? data.location : '<span>--<span>';
     user_image.src = data.avatar_url ? data.avatar_url : '<span>--<span>';
     return;
   }
@@ -42,10 +46,10 @@ async function sendRequest (e) { // send request to github api
       local_storage(data); // save data to local storage
 
       // display data
-      user_name.textContent = data.name ? data.name : '<span>--<span>'; 
+      user_name.innerHTML = data.name ? data.name : '<span>--<span>'; 
       user_blog.innerHTML = data.blog ? data.blog : '<span>--<span>';
       user_bio.innerHTML = data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>';
-      user_location.textContent = data.location ? data.location : '<span>--<span>';
+      user_location.innerHTML = data.location ? data.location : '<span>--<span>';
       user_image.src = data.avatar_url ? data.avatar_url : '<span>--<span>';
 
       show_loader(false); // hide loader

@@ -26,8 +26,8 @@ body {
 
 /* box for two side(right and left)*/
 .box {
-  height: 70%;
-  padding: 3%;
+  height: 75%;
+  padding: 5%;
   box-sizing: border-box;
   border-radius: 2%;
   background: rgb(255, 255, 255);
@@ -79,7 +79,7 @@ body {
 }
  
 /* box for submit and set its styles and set transition for that*/
-.box input[type="submit"] {
+.box input[type=submit] {
   display: inline-block;  
   border-radius: 4px;  
   background-color: #210544;  
@@ -88,13 +88,15 @@ body {
   text-align: center;  
   font-size: 15px;  
   padding: 15px;  
-  width: 100px;  
+  width: 100px; 
+  position: relative;
+  top: 80px;
   transition: all 0.5s;  
   cursor: pointer;  margin: 5px;
 }
 
 /* box for submit hover and set the background color for that*/
-.box input[type="submit"]:hover {
+.box input[type=submit]:hover {
   background-color: rgba(0, 0, 139, 0.323);}
 
 /*set the styles of loading spinner*/
@@ -190,7 +192,8 @@ body {
   margin-top: 35px;
   text-align: center;
   border-radius: 10px;
-  background-color: #f44336;
+  background-color:  #FFBABA;
+  color: #D8000C;
   visibility: hidden;
   padding: 5px;
   transition: opacity 0.6s;
@@ -198,7 +201,7 @@ body {
 }
 /* style of the message which shows in the alert box*/
 .alert-message {
-  color: white;
+  color: rgb(242, 8, 8);
   font-size: 20px;
 }
 
@@ -216,4 +219,3 @@ body {
 .close:hover {
   color: black;
 }
-
