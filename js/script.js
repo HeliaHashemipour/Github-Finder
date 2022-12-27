@@ -1,7 +1,11 @@
-// Author: HeliaSadat Hashemipour-9831106
-// This is the main script file for the midterm project.
-// This file contains the main logic of the project.
+/**
+ * This is the main script file for the midterm project.
+ * This file contains the main logic of the project
+ * @author HeliaSadat Hashemipour-9831106
+ */
 
+
+// html elements
 const APIURL = 'https://api.github.com/users/'
 
 const user_image = document.querySelector(".user-image");
@@ -12,23 +16,27 @@ const user_bio = document.querySelector("#user-bio");
 
 const submit_button = document.getElementById("submit-button");
 const loadingSpinner = document.querySelector(".loader");
-const alert_message = document.querySelector(".alert-message");
+const action_message = document.querySelector(".alert-message");
 const actionResult = document.querySelector(".alert"); 
 
 
-async function sendRequest (e) { // send request to github api
-  e.preventDefault();
-
-  const username = document.getElementById("value-input").value;
+/**
+ * Fnction that sends request to github api and get data
+ * @param {*} e 
+ * @returns 
+ */
+async function sendRequest (e) { 
+  e.preventDefault(); // prevent default action
+  const username = document.getElementById("value-input").value; // get input value
 
   if (username == "") { // if input is empty
     showAlert("Please enter a username");
     return;
   }
-
-  const data = await JSON.parse(window.localStorage.getItem(username)); // get data from local storage
-
-  if (data) { // if data is in local storage
+  // get data from local storage (bonus point)
+  const data = await JSON.parse(window.localStorage.getItem(username)); 
+  // if data is in local storage
+  if (data) { 
     user_name.innerHTML = data.name ? data.name : '<span>--<span>';
     user_blog.innerHTML = data.blog ? data.blog :'<span>--<span>';
     user_bio.innerHTML = data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>';
@@ -36,12 +44,15 @@ async function sendRequest (e) { // send request to github api
     user_image.src = data.avatar_url ? data.avatar_url : '<span>--<span>';
     return;
   }
-  try { // if data is not in local storage
+
+  // if data is not in local storage
+  try { 
     show_loader(true); // show loader
     const response = await fetch(`https://api.github.com/users/${username}`); // fetch data from github api
     const data = await response.json();  // convert response to json
 
-    if (response.status ==200) { // if response is ok
+    // if response is ok
+    if (response.status == 200) { 
       console.log(data); // log data to console
       local_storage(data); // save data to local storage
 
@@ -61,20 +72,24 @@ async function sendRequest (e) { // send request to github api
         show_loader(false); // hide loader
     }
     else
-      throw new Error(data.message); // throw error
+      throw new Error(data.message); // throw error (bonus point)
     }
   } catch (e) {
     console.log(e); // log error to console
     showAlert(e.message); // show error message
     show_loader(false); // hide loader
   }
-}
+};
 
 
-function local_storage(data){ // save data to local storage
+/**
+ * Function to save data to local storage
+ * @param {*} data 
+ */
+function local_storage(data){ 
   const username = document.getElementById("value-input").value; // get username from input
-
-  const res_data = { // create object with data
+// create object with data
+  const res_data = { 
     name: data.name ? data.name : '<span>--<span>',
     blog: data.blog ? data.blog : '<span>--<span>',
     bio: data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>',
@@ -82,22 +97,31 @@ function local_storage(data){ // save data to local storage
     avatar_url: data.avatar_url ? data.avatar_url : '<span>--<span>',
   };
 
-  window.localStorage.setItem(username, JSON.stringify(res_data)); // save data to local storage
+ // save data to local storage
+  window.localStorage.setItem(username, JSON.stringify(res_data));
   document.getElementById("value-input").value = ""; // clear input
 };
 
-// Function to show error message on screen. 
+
+/**
+ * Function to show error message on screen. 
+ * @param {*} title 
+ */
 function showAlert(title){ 
-  alert_message.textContent = title;
+  action_message.textContent = title;
   actionResult.style.display = "block"; 
-  actionResult.innerHTML="<span>" + title + "</span>";  
+  action_message.innerHTML="<span>" + title + "</span>";  
   actionResult.style.visibility = "visible"; 
   actionResult.style.transition = "opacity 0.5s ease-in-out";  
   setTimeout(() => { // removes the error message from screen after 4 seconds.
     actionResult.style.display = "none";}, 4000);
 };
 
-// Function to show loader on screen. 
+
+/**
+ * Function to show loader on screen
+ * @param {*} show 
+ */
 function show_loader(show){ 
   if (show==false) { // if show is false
     loadingSpinner.style.display = "none"; // hide loader
@@ -108,7 +132,13 @@ function show_loader(show){
   }
 };
 
-// Function to check if input is valid
+
+/**
+ *  Function to check if input is valid
+ * @param {*} name 
+ * @returns 
+ */
+//
 function checkValidity(name) {
   const regex1 = /[A-Za-z ]+/g;
   const regex2 = /[0-9\.\-\/]+/g;
@@ -118,7 +148,10 @@ function checkValidity(name) {
       return true;
   }
   return false;
-}
+};
 
-submit_button.addEventListener("click", sendRequest); // add event listener to submit button
-window.localStorage.clear(); // clear local storage
+
+// add event listener to submit button
+submit_button.addEventListener("click", sendRequest); 
+// clear local storage
+window.localStorage.clear(); 

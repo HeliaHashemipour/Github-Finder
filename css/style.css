@@ -9,9 +9,11 @@ for that I use flex display.
   justify-content: center;
   align-items: center;
   height: 90vh;
+  
 }
 
-/* main body of the page style*/
+/* main body of the page style and set background and 
+its position and font of the application */
 body {
   margin: 0;
   padding: 0%;
@@ -24,24 +26,29 @@ body {
   overflow: hidden;
 }
 
-/* box for two side(right and left)*/
+/* style of the box for two side(right and left)
+set the shape and size of that for instance*/
 .box {
-  height: 75%;
+  height: 85%;
   padding: 5%;
-  box-sizing: border-box;
   border-radius: 2%;
   background: rgb(255, 255, 255);
   opacity: 0.95;
   text-align: center;
   border: 2px solid rgb(23, 1, 16);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 120%;
 }
 
-/* box for left side*/
+/* box for left side because we have result there
+the width become auto*/
 .result-box {
   width:auto;
 }
 
-/* box for heading*/
+/* styling the box for heading*/
 .box h2 {
   margin:  0 0 30px;
   padding: 0;
@@ -52,12 +59,13 @@ body {
   opacity: 1;
 }
 
-
+/* The property sets the margin area on the top of an element*/
 .box .input-box {
   margin-top: 10px;
 }
 
-/* box for input field*/
+/* box for the input field and set the style of that 
+like become dashed and set the color*/
 .box .input-box input {
   width: 100%;
   padding: 2px 0;
@@ -70,7 +78,7 @@ body {
   outline: none;
 }
 
-/* box for input field label*/
+/* box for the input field label and set transition, as well*/
 .box .input-box label {
   top: 0;
   left: 0;
@@ -78,7 +86,7 @@ body {
   transition: padding 0.5s;
 }
  
-/* box for submit and set its styles and set transition for that*/
+/* box for submiting and set its styles and set transition for that*/
 .box input[type=submit] {
   display: inline-block;  
   border-radius: 4px;  
@@ -95,11 +103,11 @@ body {
   cursor: pointer;  margin: 5px;
 }
 
-/* box for submit hover and set the background color for that*/
+/* box for submiting hover and set the background color for that*/
 .box input[type=submit]:hover {
   background-color: rgba(0, 0, 139, 0.323);}
 
-/*set the styles of loading spinner*/
+/* set the style of loading spinner*/
 #loading {
   font-size: 10px;
   width: 1em;
@@ -148,18 +156,21 @@ body {
   display: none;
 }
 
+/*set the margine for searchbox */
 .search-box {
   margin-left: 55px;
 }
 
+/* style of the text for profile section*/
 .user-container {
   color: rgb(0, 0, 0);
   display:none;
   flex-direction: row;
   justify-content: space-between;
+  font-weight: bold ;
 }
 
- /* set the style of flex container with center-alignment*/
+ /* style of flex container with center-alignment*/
 .flex-container {
   display: flex;
   justify-content: space-between;
@@ -167,7 +178,8 @@ body {
   text-align: center;
   align-items: center;
 }
-/* set the style of the user image*/
+
+/* style of the user image*/
 .user-image {
   width: 250px;
   height: 250px;
@@ -175,14 +187,16 @@ body {
   margin-right: 50px;
   opacity: 1;
 }
-/* set the style of the user bio box*/
+
+/* style of the user bio box*/
 #user-bio {
   margin-top: 40px;
   margin-left: 0px;
   text-align: left;
   border-style: none;
 }
-/* set the style of red alert box which conatins error messages  */
+
+/* style of red alert box which conatins error messages */
 .alert {
   position: fixed;
   top: 0;
@@ -199,23 +213,10 @@ body {
   transition: opacity 0.6s;
   z-index: 1;
 }
-/* style of the message which shows in the alert box*/
+
+/* style of the message which shows in the alert box */
 .alert-message {
   color: rgb(242, 8, 8);
   font-size: 20px;
-}
-
-.close{
-  margin-left: 15px;
-  color: white;
   font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.close:hover {
-  color: black;
 }
