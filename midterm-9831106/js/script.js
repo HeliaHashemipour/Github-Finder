@@ -42,6 +42,7 @@ async function sendRequest (e) {
     user_bio.innerHTML = data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>';
     user_location.innerHTML = data.location ? data.location : '<span>--<span>';
     user_image.src = data.avatar_url ? data.avatar_url : '<span>--<span>';
+    document.querySelector(".user-container").style.display = "block"; // show user container
     return;
   }
 
