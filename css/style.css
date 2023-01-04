@@ -175,7 +175,7 @@ like become dashed and set the color*/
 /* style of the text for profile section*/
 .user-container {
   color: rgb(0, 0, 0);
-  display:none;
+  /* display:none; */
   flex-direction: row;
   justify-content: space-between;
   font-weight: bold ;
@@ -186,7 +186,7 @@ like become dashed and set the color*/
   display: flex;
   justify-content: space-between;
   justify-self: start;
-  text-align: center;
+  text-align: left;
   align-items: center;
 }
 

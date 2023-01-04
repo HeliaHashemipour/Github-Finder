@@ -86,8 +86,8 @@ async function sendRequest (e) {
       freq_lang.push(lang); // add languages to array
     }
 
-    let max = -1;
-    let max_lang = '';
+    let max = -1; // set max to -1
+    let max_lang = '';   
 
     // get most used language
     for (let j = 0; j < freq_lang.length; j++) {
