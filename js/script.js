@@ -72,37 +72,26 @@ async function sendRequest (e) {
     });
     // Bonus point
     // get languages of user repos
+    let highestFrequency =0 
+    let mostFrequentLangs={}  // object to store languages
     const freq_lang = []; // array to store languages
     for (let i = 0; i < user_repos.length; i++) { // loop through user repos
       const obj = user_repos[i]; // get repo
-      const langs = await fetch(obj.languages_url).catch((err) => { // get languages of repo
-        console.log(err);
-        showAlert(err.message);
-      });
-      const lang = await langs.json().catch((err) => { // convert response to json
-        console.log(err);
-        showAlert(err.message);
-      });
-      freq_lang.push(lang); // add languages to array
-    }
-
-    let max = -1; // set max to -1
-    let max_lang = '';   
-
-    // get most used language
-    for (let j = 0; j < freq_lang.length; j++) {
-      const obj = freq_lang[j]; // get languages
-      for (const key in obj) { // loop through languages
-        if (obj.hasOwnProperty(key)) { // check if language is in object
-          const value = obj[key]; // get value of language
-          if (value > max) { // check if value is greater than max
-            max = value; // set max to value
-            max_lang = key; // set max_lang to key
-          }
-        }
+      const langs = obj.language // get language of repo
+      if (langs === null) continue;  // if language is null
+      // console.log(langs);
+      freq_lang[langs] ? freq_lang[langs]++ : (freq_lang[langs] = 1) // count languages
+      console.log(freq_lang);
+      if (freq_lang[langs] > highestFrequency) { // find most used language
+        highestFrequency = freq_lang[langs]; // set highest frequency
+        mostFrequentLangs = [langs]; // set most used language
+      } else if (freq_lang[langs] === highestFrequency) { // if there is more than one most used language
+        mostFrequentLangs.push(langs); // add most used language to array
       }
     }
-    const most_used_lang = max_lang; // set most used language
+    console.log(mostFrequentLangs[0]); // log most used language
+
+    const most_used_lang = mostFrequentLangs[0]; // set most used language
     // if response is ok
     if (response.status == 200) { 
       data.most_used_lang = most_used_lang; // add most used language to data
