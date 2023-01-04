@@ -13,11 +13,14 @@ const user_name = document.querySelector("#user-username");
 const user_blog = document.querySelector("#user-blog");
 const user_location = document.querySelector("#user-location");
 const user_bio = document.querySelector("#user-bio");
+const user_fav_lang = document.querySelector("#user-fav-lang");
 
 const submit_button = document.getElementById("submit-button");
 const loadingSpinner = document.querySelector(".loader");
 const action_message = document.querySelector(".alert-message");
 const actionResult = document.querySelector(".alert"); 
+
+
 
 
 /**
@@ -35,6 +38,10 @@ async function sendRequest (e) {
   }
   // get data from local storage (bonus point)
   const data = await JSON.parse(window.localStorage.getItem(username)); 
+  if (data !== null) {
+    showAlert(`\"${username}\" found in LocalStorage`, 'info');
+  }
+
   // if data is in local storage
   if (data) { 
     user_name.innerHTML = data.name ? data.name : '<span>--<span>';
@@ -42,6 +49,7 @@ async function sendRequest (e) {
     user_bio.innerHTML = data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>';
     user_location.innerHTML = data.location ? data.location : '<span>--<span>';
     user_image.src = data.avatar_url ? data.avatar_url : '<span>--<span>';
+    user_fav_lang.innerHTML = data.most_used_lang ? data.most_used_lang : '<span>--<span>';
     document.querySelector(".user-container").style.display = "block"; // show user container
     return;
   }
@@ -51,34 +59,53 @@ async function sendRequest (e) {
     show_loader(true); // show loader
     const response = await fetch(`https://api.github.com/users/${username}`); // fetch data from github api
     const data = await response.json();  // convert response to json
-    // const response2 = await fetch(`https://api.github.com/users/${username}/repos?sort=created`)
-    // const data2 = await response2.json()
-    // const slice_data = data2.slice(0, 5)
-    // slice_data.forEach(async function(element) {
-    //   let [frequencies, highestFrequency, mostFrequentLangs] = [{}, 0, []];
+    // get user repos from github api
+    const user_repo = await fetch(
+       `https://api.github.com/users/${username}/repos?per_page=5&sort=pushed`
+    ).catch((err) => {
+      console.log(err);
+      showAlert(err.message);
+    });
+    const user_repos = await user_repo?.json().catch((err) => {
+      console.log(err);
+      showAlert(err.message);
+    });
+    // Bonus point
+    // get languages of user repos
+    const freq_lang = []; // array to store languages
+    for (let i = 0; i < user_repos.length; i++) { // loop through user repos
+      const obj = user_repos[i]; // get repo
+      const langs = await fetch(obj.languages_url).catch((err) => { // get languages of repo
+        console.log(err);
+        showAlert(err.message);
+      });
+      const lang = await langs.json().catch((err) => { // convert response to json
+        console.log(err);
+        showAlert(err.message);
+      });
+      freq_lang.push(lang); // add languages to array
+    }
 
-    //   const url = (element.languages_url);
-    //   const response3 = await fetch(url);
-    //   const data3 = await response3.json()
-    //   // data3.forEach((repo) {
-    //   //   const lang = Object.keys(repo)
-    //   //   if (lang.length == 0) {
-    //   //     return
-    //   //   }
-    //   //   frequencies[lang] ? frequencies[lang]++ : (frequencies[lang] = 1);
-    //   //   if (frequencies[lang] > highestFrequency) {
-    //   //       highestFrequency = frequencies[lang];
-    //   //       mostFrequentLangs = [lang];
-    //   //     } else if (frequencies[lang] === highestFrequency) {
-    //   //       mostFrequentLangs.push(lang);
-    //   //     }
+    let max = -1;
+    let max_lang = '';
 
-    //   //   console.log(lang)
-    //   //   })
-    // })
-
+    // get most used language
+    for (let j = 0; j < freq_lang.length; j++) {
+      const obj = freq_lang[j]; // get languages
+      for (const key in obj) { // loop through languages
+        if (obj.hasOwnProperty(key)) { // check if language is in object
+          const value = obj[key]; // get value of language
+          if (value > max) { // check if value is greater than max
+            max = value; // set max to value
+            max_lang = key; // set max_lang to key
+          }
+        }
+      }
+    }
+    const most_used_lang = max_lang; // set most used language
     // if response is ok
     if (response.status == 200) { 
+      data.most_used_lang = most_used_lang; // add most used language to data
       console.log(data); // log data to console
       local_storage(data); // save data to local storage
 
@@ -88,6 +115,7 @@ async function sendRequest (e) {
       user_bio.innerHTML = data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>';
       user_location.innerHTML = data.location ? data.location : '<span>--<span>';
       user_image.src = data.avatar_url ? data.avatar_url : '<span>--<span>';
+      user_fav_lang.innerHTML = data.most_used_lang ? data.most_used_lang : '<span>--<span>';
 
       show_loader(false); // hide loader
       document.querySelector(".user-container").style.display = "block"; // show user container
@@ -121,6 +149,7 @@ function local_storage(data){
     bio: data.bio ? data.bio.replace("\n", "<br>") : '<span>--<span>',
     location: data.location ? data.location : '<span>--<span>',
     avatar_url: data.avatar_url ? data.avatar_url : '<span>--<span>',
+    most_used_lang: data.most_used_lang ? data.most_used_lang : '<span>--<span>',
   };
 
  // save data to local storage
